@@ -12,8 +12,9 @@ var sidebar = sidebar.Sidebar({
   url : './sidebar.html',
   onReady: function(worker) {
     sidebarWorker = worker;
-    sidebarWorker.port.on("userInput", function() {
-      pageWorker.port.emit("drawBorder", "red");
+    sidebarWorker.port.on("userInput", function(query) {
+      console.log(query);
+      pageWorker.port.emit("searchVideos", query);
     });
   }
 });
@@ -40,7 +41,7 @@ function initAddon(state) {
   });
 
   tabs.open({
-    url : "http://localhost/kitten.html",
+    url : "http://www.youtube.com/results?search_query=kitten",
     inNewWindow : false
   });
 }
