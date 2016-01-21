@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="YoutubeExt">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="app/controllers.js"></script>
     <title>Title</title>
 </head>
-<body>
+<body ng-controller="VideosListCtrl">
     <h1>This is sidebar</h1>
 
     <form action="">
         <input type="text" name="y_query" id="y_query">
         <button id="y_search">Search</button>
     </form>
+
+    <ul>
+        <li ng-repeat="video in videos">
+            <a href="{{video.url}}">{{video.title}}</a>
+        </li>
+    </ul>
 
     <script src="sidebar.js"></script>
 </body>

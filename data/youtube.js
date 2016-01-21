@@ -1,11 +1,23 @@
 self.port.on("searchVideos", function(query) {
     var videos = getVideosByKeywords(query.split(' '));
+    resetBorders();
 
     videos.forEach(function(item) {
-        var node = item[1];
-        node.style.border = "5px solid red";
+        var videoItem = item[0];
+        videoItem.node.style.border = "5px solid red";
     });
+
+    self.port.emit("searchResults", videos);
 });
+
+function resetBorders() {
+    var nodes = document.querySelectorAll('#results a.yt-uix-tile-link');
+
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        node.style.border = 'none';
+    }
+}
 
 function getVideosByKeywords(keywords) {
     var nodes = document.querySelectorAll('#results a.yt-uix-tile-link');
@@ -13,13 +25,19 @@ function getVideosByKeywords(keywords) {
 
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
-        var title = node.href;
-        var score = getTitleScore(title);
+        var videoItem = {
+            node : node,
+            title : node.text,
+            url : node.href
+        };
+        videoItem.score = getTitleScore(keywords, videoItem.title);
 
-        sorted_nodes.push([title, node, score])
+        if (videoItem.score) {
+            sorted_nodes.push([videoItem, videoItem.score]);
+        }
     }
 
-    sorted_nodes.sort(function(a, b) {return a[2] - b[2]});
+    sorted_nodes.sort(function(a, b) {return a[1] - b[1]});
 
     return sorted_nodes;
 }

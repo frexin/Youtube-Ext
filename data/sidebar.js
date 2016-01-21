@@ -1,9 +1,10 @@
 addon.port.emit("ping");
 
-function searchVideos() {
+function searchVideos(event) {
+    event.preventDefault();
+
     var searchInput = document.getElementById('y_query');
-    var query = searchInput.getAttribute('value');
-    console.log(query);
+    var query = searchInput.value;
 
     addon.port.emit("userInput", query);
 }
