@@ -3,8 +3,7 @@ self.port.on("searchVideos", function(query) {
     resetBorders();
 
     videos.forEach(function(item) {
-        var videoItem = item[0];
-        videoItem.node.style.border = "5px solid red";
+        item.node.style.border = "5px solid red";
     });
 
     self.port.emit("searchResults", videos);
@@ -30,6 +29,7 @@ function getVideosByKeywords(keywords) {
             title : node.text,
             url : node.href
         };
+
         videoItem.score = getTitleScore(keywords, videoItem.title);
 
         if (videoItem.score) {
@@ -39,7 +39,12 @@ function getVideosByKeywords(keywords) {
 
     sorted_nodes.sort(function(a, b) {return a[1] - b[1]});
 
-    return sorted_nodes;
+    var videoItems = [];
+    sorted_nodes.forEach(function(elem) {
+        videoItems.push(elem[0]);
+    });
+
+    return videoItems;
 }
 
 function getTitleScore(keywords, title) {

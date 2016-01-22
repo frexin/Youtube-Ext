@@ -1,13 +1,26 @@
-addon.port.emit("ping");
+var youtubeApp = angular.module('YoutubeExt', []);
 
-function searchVideos(event) {
-    event.preventDefault();
+youtubeApp.controller('VideosListCtrl', ['$scope', function($scope) {
+    $scope.videos = [];
 
-    var searchInput = document.getElementById('y_query');
-    var query = searchInput.value;
+    var $searchButton = document.getElementById('y_search');
+    var $searchField  = document.getElementById('y_query');
 
-    addon.port.emit("userInput", query);
-}
+    function addHandlers() {
+        $searchButton.addEventListener('click', function(event) {
+            event.preventDefault();
 
-var searchBtn = document.getElementById('y_search');
-searchBtn.addEventListener('click', searchVideos);
+            var query = $searchField.value;
+            addon.port.emit("userInput", query);
+        });
+
+        addon.port.on("searchResults", function(items) {
+            $scope.$apply(function(){
+                console.log(items);
+                $scope.videos = items;
+            });
+        });
+    }
+
+    addHandlers();
+}]);

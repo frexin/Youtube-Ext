@@ -38,8 +38,8 @@ function initAddon(state) {
             contentScriptFile: self.data.url("youtube.js")
         });
 
-        pageWorker.on("searchResults", function(results) {
-            console.log(results);
+        pageWorker.port.on("searchResults", function(results) {
+            sidebarWorker.port.emit("searchResults", results);
         });
     });
 
