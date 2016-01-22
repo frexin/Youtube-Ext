@@ -16,7 +16,10 @@ var sidebar = sbar.Sidebar({
 
         sidebarWorker.port.on("userInput", function (query) {
             pageWorker.port.emit("searchVideos", query);
-            ss.storage.queries.push(query);
+
+            if (-1 == ss.storage.queries.indexOf(query)) {
+                ss.storage.queries.push(query);
+            }
         });
 
         if (!ss.storage.queries) {
