@@ -1,5 +1,12 @@
-self.port.on("searchVideos", function(query) {
+self.port.on("searchVideos", searchVideosByQuery);
+
+var lastVideosList = [];
+var lastQuery;
+
+function searchVideosByQuery(query) {
+    lastQuery = query;
     var videos = getVideosByKeywords(query.split(' '));
+
     resetBorders();
 
     videos.forEach(function(item) {
@@ -7,7 +14,7 @@ self.port.on("searchVideos", function(query) {
     });
 
     self.port.emit("searchResults", videos);
-});
+}
 
 function resetBorders() {
     var nodes = document.querySelectorAll('#results a.yt-uix-tile-link');
@@ -18,9 +25,9 @@ function resetBorders() {
     }
 }
 
-function getVideosByKeywords(keywords) {
+function getAllVideos() {
+    var videos = [];
     var nodes = document.querySelectorAll('#results a.yt-uix-tile-link');
-    var sorted_nodes = [];
 
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
@@ -30,12 +37,25 @@ function getVideosByKeywords(keywords) {
             url : node.href
         };
 
+        videos.push(videoItem);
+    }
+
+    lastVideosList = videos;
+
+    return videos;
+}
+
+function getVideosByKeywords(keywords) {
+    var sorted_nodes = [];
+    var videos = getAllVideos();
+
+    videos.forEach(function(videoItem) {
         videoItem.score = getTitleScore(keywords, videoItem.title);
 
         if (videoItem.score) {
             sorted_nodes.push([videoItem, videoItem.score]);
         }
-    }
+    });
 
     sorted_nodes.sort(function(a, b) {return a[1] - b[1]});
 
@@ -61,3 +81,13 @@ function getTitleScore(keywords, title) {
 
     return score;
 }
+
+window.setInterval(function() {
+    var lastVideosCollection = JSON.stringify(lastVideosList);
+    var currentVideosCollection = JSON.stringify(getAllVideos());
+
+    if (lastVideosCollection !== currentVideosCollection) {
+        console.log('new col');
+        searchVideosByQuery(lastQuery);
+    }
+}, 500);

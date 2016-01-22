@@ -16,7 +16,6 @@ youtubeApp.controller('VideosListCtrl', ['$scope', function($scope) {
 
         addon.port.on("searchResults", function(items) {
             $scope.$apply(function(){
-                console.log(items);
                 $scope.videos = items;
             });
         });
