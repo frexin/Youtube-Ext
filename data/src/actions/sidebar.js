@@ -1,17 +1,16 @@
 var youtubeApp = angular.module('YoutubeExt', []);
 
-youtubeApp.controller('VideosListCtrl', ['$scope', function($scope) {
+youtubeApp.controller('SidebarCtrl', ['$scope', function($scope) {
     $scope.videos = [];
 
     var $searchButton = document.getElementById('y_search');
     var $searchField  = document.getElementById('y_query');
 
-    function addHandlers() {
+    (function addHandlers() {
         $searchButton.addEventListener('click', function(event) {
             event.preventDefault();
 
-            var query = $searchField.value;
-            addon.port.emit("userInput", query);
+            addon.port.emit("userInput", $searchField.value);
         });
 
         addon.port.on("searchResults", function(items) {
@@ -25,7 +24,5 @@ youtubeApp.controller('VideosListCtrl', ['$scope', function($scope) {
                 list: queries
             });
         });
-    }
-
-    addHandlers();
+    })();
 }]);

@@ -1,32 +1,26 @@
 var self = require('sdk/self');
 var buttons = require('sdk/ui/button/action');
 var tabs = require('sdk/tabs');
-var sbar = require('sdk/ui/sidebar');
-var ss = require("sdk/simple-storage");
+var ss = require('sdk/ui/sidebar');
+var storage = require('./data/src/modules/stringstorage');
 
 var sidebarWorker;
 var pageWorker;
 
-var sidebar = sbar.Sidebar({
+var sidebar = ss.Sidebar({
     id: 'youtube-sidebar',
     title: 'YouTube Search',
-    url: './sidebar.html',
+    url: './views/sidebar.html',
+
     onReady: function (worker) {
         sidebarWorker = worker;
 
         sidebarWorker.port.on("userInput", function (query) {
             pageWorker.port.emit("searchVideos", query);
-
-            if (-1 == ss.storage.queries.indexOf(query)) {
-                ss.storage.queries.push(query);
-            }
+            storage.save(query);
         });
 
-        if (!ss.storage.queries) {
-            ss.storage.queries = [];
-        }
-
-        sidebarWorker.port.emit("initSuggest", ss.storage.queries);
+        sidebarWorker.port.emit("initSuggest", storage.getList());
     }
 });
 
@@ -34,22 +28,26 @@ var button = buttons.ActionButton({
     id: "youtube-link",
     label: "Open YouTube",
     icon: {
-        "16": "./icon-16.png",
-        "32": "./icon-32.png",
-        "64": "./icon-64.png"
+        "16": "./icons/icon-16.png",
+        "32": "./icons/icon-32.png",
+        "64": "./icons/icon-64.png"
     },
     onClick: initAddon
 });
 
-function initAddon(state) {
+function initAddon() {
     sidebar.show();
 
     tabs.on("ready", function (tab) {
         pageWorker = tab.attach({
-            contentScriptFile: self.data.url("youtube.js")
+            contentScriptFile: [
+                self.data.url("./src/modules/PageItemsCollection.js"),
+                self.data.url("./src/modules/PageItemsHighliter.js"),
+                self.data.url("./src/actions/youtube.js")
+            ]
         });
 
-        pageWorker.port.on("searchResults", function(results) {
+        pageWorker.port.on("searchResults", function (results) {
             sidebarWorker.port.emit("searchResults", results);
         });
     });
@@ -59,4 +57,3 @@ function initAddon(state) {
         inNewWindow: false
     });
 }
-
