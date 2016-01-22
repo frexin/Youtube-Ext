@@ -21,6 +21,7 @@ youtubeApp.controller('SidebarCtrl', ['$scope', function($scope) {
 
         addon.port.on("initSuggest", function(queries) {
             new Awesomplete($searchField, {
+                minChars : 3,
                 list: queries
             });
         });

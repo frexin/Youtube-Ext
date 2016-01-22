@@ -4,25 +4,46 @@
     <meta charset="UTF-8">
     <script type="text/javascript" src="../lib/angular.min.js"></script>
     <script type="text/javascript" src="../lib/awesomplete.min.js"></script>
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
     <link rel="stylesheet" href="../lib/awesomplete.css">
-    <title>Title</title>
+
+    <style>
+        .items-list {
+            margin-top: 70px;
+        }
+    </style>
 </head>
 <body ng-controller="SidebarCtrl">
-    <h1>This is sidebar</h1>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-brand">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for..." name="y_query" id="y_query">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="y_search">Go!</button>
+                          </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
 
-    <form action="">
-        <input type="text" name="y_query" class="awesomplete" id="y_query">
-        <button id="y_search">Search</button>
-    </form>
+<div class="container items-list">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" ng-show="videos.length == 0">Введите текст для поиска</div>
 
-    <p ng-show="videos.length == 0">Введите текст для поиска</p>
-
-    <ul>
-        <li ng-repeat="video in videos">
-            <a href="{{video.url}}">{{video.title}}</a>
-        </li>
-    </ul>
-
-    <script src="../src/actions/sidebar.js"></script>
+            <ul class="nav nav-pills nav-stacked">
+                <li ng-repeat="video in videos">
+                    <a href="{{video.url}}">{{video.title}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="../src/actions/sidebar.js"></script>
 </body>
 </html>

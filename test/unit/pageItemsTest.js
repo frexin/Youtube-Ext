@@ -35,7 +35,7 @@ describe('PageItemsTest', function() {
 
         expect(pageItemsCollection.isCollectionsEqual(first, second)).toEqual(true);
 
-        var second = [{"title" : "red"}];
+        second = [{"title" : "red"}];
         expect(pageItemsCollection.isCollectionsEqual(first, second)).toEqual(false);
 
     });
