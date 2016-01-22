@@ -14,7 +14,7 @@ var stringsStorage = (function () {
         },
 
         getStringsList: function () {
-
+            return ss.storage.strings;
         }
     };
 

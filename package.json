@@ -3,8 +3,22 @@
   "name": "youtubehelper",
   "version": "0.0.1",
   "description": "A basic add-on",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frexin/Youtube-Ext"
+  },
   "main": "index.js",
   "author": "Kirill Senkevich",
+  "devDependencies": {
+    "http-server": "^0.6.1",
+    "karma": "^0.12.16",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.1.5",
+    "karma-qunit": "^0.1.9",
+    "qunitjs": "^1.20.0",
+    "shelljs": "^0.2.6",
+    "tmp": "0.0.23"
+  },
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"

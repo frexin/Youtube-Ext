@@ -2,7 +2,7 @@ var self = require('sdk/self');
 var buttons = require('sdk/ui/button/action');
 var tabs = require('sdk/tabs');
 var ss = require('sdk/ui/sidebar');
-var storage = require('./data/src/modules/stringstorage');
+var storage = require('./data/src/stringstorage');
 
 var sidebarWorker;
 var pageWorker;

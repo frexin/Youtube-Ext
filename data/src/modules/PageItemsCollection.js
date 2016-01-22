@@ -2,22 +2,7 @@ var PageItemsCollection = function (selector) {
 
     var itemsSelector = selector;
 
-    var getTitleScore = function (words, title) {
-        var score = 0;
-        var titleWords = title.split(' ');
-
-        for (var i = 0; i < titleWords.length; i++) {
-            var word = titleWords[i];
-
-            if (-1 !== words.indexOf(word)) {
-                score++;
-            }
-        }
-
-        return score;
-    };
-
-    return {
+    var module =  {
         getItemsCollection: function () {
             var items = [];
             var nodes = document.querySelectorAll(itemsSelector);
@@ -41,7 +26,7 @@ var PageItemsCollection = function (selector) {
             var filteredItems = [];
 
             collection.forEach(function (item) {
-                item.score = getTitleScore(words, item.title);
+                item.score = module.getTitleScore(words, item.title);
 
                 if (item.score) {
                     filteredItems.push([item, item.score]);
@@ -65,6 +50,23 @@ var PageItemsCollection = function (selector) {
             var second = JSON.stringify(second_collection);
 
             return first == second;
+        },
+
+        getTitleScore: function (words, title) {
+            var score = 0;
+            var titleWords = title.split(' ');
+
+            for (var i = 0; i < titleWords.length; i++) {
+                var word = titleWords[i];
+
+                if (-1 !== words.indexOf(word)) {
+                    score++;
+                }
+            }
+
+            return score;
         }
     };
+
+    return module;
 };
