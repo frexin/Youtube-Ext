@@ -19,6 +19,12 @@ youtubeApp.controller('VideosListCtrl', ['$scope', function($scope) {
                 $scope.videos = items;
             });
         });
+
+        addon.port.on("initSuggest", function(queries) {
+            new Awesomplete($searchField, {
+                list: queries
+            });
+        });
     }
 
     addHandlers();

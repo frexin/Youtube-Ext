@@ -1,12 +1,13 @@
 var self = require('sdk/self');
 var buttons = require('sdk/ui/button/action');
 var tabs = require('sdk/tabs');
-var sidebar = require('sdk/ui/sidebar');
+var sbar = require('sdk/ui/sidebar');
+var ss = require("sdk/simple-storage");
 
 var sidebarWorker;
 var pageWorker;
 
-var sidebar = sidebar.Sidebar({
+var sidebar = sbar.Sidebar({
     id: 'youtube-sidebar',
     title: 'YouTube Search',
     url: './sidebar.html',
@@ -15,7 +16,14 @@ var sidebar = sidebar.Sidebar({
 
         sidebarWorker.port.on("userInput", function (query) {
             pageWorker.port.emit("searchVideos", query);
+            ss.storage.queries.push(query);
         });
+
+        if (!ss.storage.queries) {
+            ss.storage.queries = [];
+        }
+
+        sidebarWorker.port.emit("initSuggest", ss.storage.queries);
     }
 });
 
