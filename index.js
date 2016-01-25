@@ -53,7 +53,7 @@ function initAddon() {
     });
 
     tabs.open({
-        url: "http://www.youtube.com/results?search_query=kitten",
+        url: "http://www.youtube.com/results?search_query=firefox",
         inNewWindow: false
     });
 }

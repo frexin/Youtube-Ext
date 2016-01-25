@@ -24,7 +24,7 @@
     self.port.on("searchVideos", searchCallback);
 
     window.setInterval(function () {
-        if (!pageItemsCollection.isCollectionsEqual(lastSearchResults, pageItemsCollection.getItemsCollection())) {
+        if (lastQuery && !pageItemsCollection.isCollectionsEqual(lastSearchResults, pageItemsCollection.getItemsCollection())) {
             searchCallback(lastQuery);
         }
     }, 500);
